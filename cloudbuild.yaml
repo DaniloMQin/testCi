@@ -23,8 +23,8 @@ steps:
   - '.'
   - '-r'
   - 'functions/requirements.txt'
-- name: nose2
-  id: INSTALL
+- name: python:3.7
+  id: INSTALLNOSE
   entrypoint: nose2
   args:
   - '-m'
