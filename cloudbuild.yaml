@@ -52,4 +52,4 @@ steps:
   - '--ignore=E501'
   - 'functions/'
   waitFor:
-  - INSTALL 
+  - RUN-UNIT-TESTS 
