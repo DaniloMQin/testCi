@@ -32,7 +32,7 @@ steps:
   - '-s'
   - 'functions'
   - '-c'
-#  - 'functions/nose2.cfg'
+  - 'functions/nose2.cfg'
   waitFor:
   - INSTALL
 #- name: python:3.7
