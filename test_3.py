@@ -1,18 +1,18 @@
-from nose2.compat import unittest
+import unittest
 import time
 
 class Test3(unittest.TestCase):
     def setup(self):
-        print "Hello World"
+        print("Hello World")
     def test31(self):
-        print "TEST31 starts"
+        print("TEST31 starts")
         time.sleep(2)
-        print "TEST31 ends"
+        print("TEST31 ends")
     def test32(self):
-        print "TEST32 starts"
+        print("TEST32 starts")
         time.sleep(4)
         assert False
-        print "TEST32 ends"
+        print("TEST32 ends")
     def teardown(self):
-        print "Good Bye World"
+        print("Good Bye World")
 
