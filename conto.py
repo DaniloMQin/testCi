@@ -9,7 +9,7 @@ class ContoCorrente(Conto):
         self.__saldo = importo
 
     def preleva(self, importo):
-        self.__saldo -= importo
+        self.__saldo -= importo 
 
     def deposita(self, importo):
         self.__saldo += importo
