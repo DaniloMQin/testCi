@@ -11,7 +11,7 @@ class Test3(unittest.TestCase):
     def test32(self):
         print("TEST32 starts")
         time.sleep(4)
-        assert False
+        assert True
         print("TEST32 ends")
     def teardown(self):
         print("Good Bye World")

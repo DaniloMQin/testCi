@@ -1,0 +1,51 @@
+{
+"GlobalVariables": [
+{
+"g_conn_id":"bigquery_default",
+"g_check_bypass":0,
+"g_composer_bucket_path":"/home/airflow/gcs/dags/",
+"g_failed_bucket":"dprw_inv",
+"g_output_bucket":"dprw_arc",
+"g_project":"qintesi-ext-projects",
+"g_temp_folder":"gs://ls-temp-files/temp/",
+"p_config_file":"/home/airflow/gcs/dags/json/prova.json",
+"p_CSV_encoding":"ISO-8859-1",
+"p_CSV_field_delimiter":";",
+"p_dataset_raw":"RAW_",
+"p_dataset_prz":"PRZ_",
+"p_dataset_rez":"REZ_",
+"p_d_retries":0,
+"p_DLMS_SetDebug":1,
+"p_etl_schedule_interval":"None",
+"p_logging_prefix":"LS_LOG_",
+"p_q_TabNumber":13,
+"p_r_CheckResults":"KO",
+"p_v_output_bucket": "dag_output"
+}
+]
+,
+"Scheduling" : [
+{
+"Dag_name":"DPL_LS_ETL_001",
+"start_date":"2018, 1, 1",
+"schedule_interval":"None",
+"default_args":"default_dag_args",
+"retries":"5",
+"retry_delay":"20"
+}
+]
+,
+"SQLVariables": [
+{ "id": "@<@ProjectID@>@", "value": "qintesi-ext-projects"},
+{ "id": "@<@Dataset@>@", "value": "TEST_002" }
+]
+,
+"TaskList" : [
+{ "TaskId": "A", "TaskDesc": "A", "Following_Task" : "[B,C]",   "TaskSQL": "abc.sql",   "provide_context":"True",    "TriggerRule":"ALL_SUCCESS" },
+{ "TaskId": "C", "TaskDesc": "C", "Following_Task" : "",        "TaskSQL": "abc_01.sql",   "provide_context":"True",    "TriggerRule":"ONE_FAILED" },
+{ "TaskId": "D", "TaskDesc": "D", "Following_Task" : "[C,E]",   "TaskSQL": "abc_01.sql",   "provide_context":"True",    "TriggerRule":"ALL_SUCCESS" },
+{ "TaskId": "B", "TaskDesc": "B", "Following_Task" : "[C,D]",   "TaskSQL": "abc_01.sql",   "provide_context":"True",    "TriggerRule":"ALL_SUCCESS" },
+{ "TaskId": "E", "TaskDesc": "E", "Following_Task" : "",        "TaskSQL": "abc.sql",   "provide_context":"True",    "TriggerRule":"ALL_SUCCESS" }
+]
+}
+
