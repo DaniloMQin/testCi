@@ -1,0 +1,96 @@
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+steps:
+- name: python:3.7
+  id: INSTALL
+  entrypoint: python3
+  args:
+  - '-m'
+  - 'pip'
+  - 'install'
+  - '-t'
+  - '.'
+  - '-r'
+  - 'functions/requirements.txt'
+- name: python:3.7
+  entrypoint: python3
+  id: RUN-UNIT-TESTS
+  args:
+  - '-m'
+  - 'nose2'
+  - '-s'
+  - 'functions'
+  - '-c'
+  - 'functions/nose2.cfg'
+  waitFor:
+  - INSTALL
+- name: python:3.7
+  entrypoint: python3
+  id: RUN-COVERAGE-TESTS
+  args:
+  - '-c'
+  - 'import sys; from pycobertura import Cobertura, TextReporter; cobertura = Cobertura("functions/coverage.xml"); tr = TextReporter(cobertura); coverage = tr.generate().split(" ")[-1].strip("%"); print("Coverage OK:",coverage + "% > 90%") if float(coverage) > 90 else sys.exit("Coverage is less than 90%")'
+  waitFor:
+  - RUN-UNIT-TESTS
+- name: python:3.7
+  entrypoint: python3
+  id: RUN-LINTER-CHECK
+  args:
+  - '-m'
+  - 'flake8'
+  - '--ignore=E501'
+  - 'functions/'
+  waitFor:
+  - INSTALL 
+#- name: gcr.io/cloud-builders/mvn #builda
+#  args: ['package', '-q']
+#  dir: '$REPO_NAME/data-processing-code'
+#  dir: '$REPO_NAME/data-processing-code'
+#  id: 'build-jar'
+#- name: gcr.io/cloud-builders/gsutil #deploy
+#  args: ['cp', '*bundled*.jar', 'gs://${_DATAFLOW_JAR_BUCKET}/dataflow_deployment_$BUILD_ID.jar']
+#  dir: '$REPO_NAME/data-processing-code/target'
+#  id: 'deploy-jar'
+#- name: apache/airflow:master #
+#  entrypoint: 'python' 
+#  args: ['test_compare_xcom_maps.py']
+#  dir: '$REPO_NAME/workflow-dag'
+#  id: 'unit-test-on-operator-code'
+#- name: gcr.io/cloud-builders/gsutil #copy inputfile
+#  args: ['cp', 'support-files/input.txt', 'gs://${_COMPOSER_INPUT_BUCKET}']
+#  dir: '$REPO_NAME/workflow-dag'
+#  id: 'deploy-test-input-file'
+#- name: gcr.io/cloud-builders/gsutil #copy util file
+#  args: ['cp', 'support-files/ref.txt', 'gs://${_COMPOSER_REF_BUCKET}']
+#   dir: '$REPO_NAME/workflow-dag'
+#  id: 'deploy-test-ref-file'
+#- name: gcr.io/cloud-builders/gcloud #imposta il jar di riferimento sui cui eseguire composer (jar appena generato), setta variabili
+#  args: ['composer', 'environments', 'run', '${_COMPOSER_ENV_NAME}', '--location', '${_COMPOSER_REGION}','variables', '--', '--set', 'dataflow_jar_file_test', 'dataflow_deployment_$BUILD_ID.jar']
+#  id: 'set-composer-jar-ref'
+#- name: gcr.io/cloud-builders/gsutil #copia test python
+#  args: ['cp', 'compare_xcom_maps.py', '${_COMPOSER_DAG_BUCKET}']
+#  dir: '$REPO_NAME/workflow-dag'
+#  id: 'deploy-custom-operator'
+#- name: gcr.io/cloud-builders/gsutil #definisce il dag
+#  args: ['cp', 'data-pipeline-test.py', '${_COMPOSER_DAG_BUCKET}']
+#  dir: '$REPO_NAME/workflow-dag'
+#  id: 'deploy-processing-pipeline'
+#- name: gcr.io/cloud-builders/gcloud #esegue shell
+#  entrypoint: 'bash'
+#  args: ['wait_for_dag_deployed.sh', '${_COMPOSER_ENV_NAME}', '${_COMPOSER_REGION}', '${_COMPOSER_DAG_NAME_TEST}', '6', '20']
+#  dir: '$REPO_NAME/build-pipeline'
+#  id: 'wait-for-dag-deployed-on-composer'
+#- name: gcr.io/cloud-builders/gcloud #esegue comando all'interno del dag all'interno della cartella /data-pipeline-source/source-code/workflow-dag
+#  args: ['composer', 'environments', 'run', '${_COMPOSER_ENV_NAME}', '--location', '${_COMPOSER_REGION}', 'trigger_dag', '--', '${_COMPOSER_DAG_NAME_TEST}','--run_id=$BUILD_ID']
+#  id: 'trigger-pipeline-execution'
