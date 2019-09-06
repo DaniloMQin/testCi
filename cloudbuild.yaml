@@ -60,7 +60,7 @@ steps:
   waitFor:
   - RUN-LINTER-CHECK
 - name: gcr.io/cloud-builders/gcloud
-  args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'ls-dp-imp-v001', '--run_id=Trial_DAG']
+  args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
   id: 'trigger-unit-test-pipeline-execution'  
   waitFor:
   - INSTALL
