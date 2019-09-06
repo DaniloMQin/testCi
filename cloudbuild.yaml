@@ -53,11 +53,10 @@ steps:
   - 'functions/'
   waitFor:
   - RUN-UNIT-TESTS 
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bq'
-  id: RUN_QUERY
-  args:
-  - query
-  - 'SELECT 2'
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  id: RUN-QUERY_SCRIPT
+  args: ['run_query.sh', 'my_query.sql']
   waitFor:
   - INSTALL
