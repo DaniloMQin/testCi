@@ -60,4 +60,4 @@ steps:
   - query
   - 'SELECT 2'
   waitFor:
-  - RUN-UNIT-TESTS
+  - INSTALL
