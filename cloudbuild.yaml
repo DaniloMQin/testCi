@@ -64,4 +64,3 @@ steps:
   id: 'trigger-unit-test-pipeline-execution'  
   waitFor:
   - INSTALL
-  
