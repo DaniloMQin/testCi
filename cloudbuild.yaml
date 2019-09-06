@@ -58,7 +58,7 @@ steps:
   id: RUN-QUERY_SCRIPT
   args: ['run_query.sh', 'my_query.sql']
   waitFor:
-  - RUN-LINTER-CHECK
+  - INSTALL
 - name: gcr.io/cloud-builders/gcloud
   args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
   id: 'trigger-unit-test-pipeline-execution'  
