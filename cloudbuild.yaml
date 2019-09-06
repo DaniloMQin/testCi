@@ -53,7 +53,6 @@ steps:
   - 'functions/'
   waitFor:
   - RUN-UNIT-TESTS 
-steps:
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
   id: RUN-QUERY_SCRIPT
