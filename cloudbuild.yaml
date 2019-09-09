@@ -25,6 +25,27 @@ steps:
   - 'functions/requirements.txt'
 - name: python:3.7
   entrypoint: python3
+  id: RUN-LINTER-CHECK
+  args:
+  - '-m'
+  - 'flake8'
+  - '--ignore=E501'
+  - 'functions/'
+  waitFor:
+  - INSTALL
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  id: RUN-QUERY_SCRIPT
+  args: ['run_query.sh', 'my_query.sql']
+  waitFor:
+  - RUN-LINTER-CHECK
+- name: gcr.io/cloud-builders/gcloud
+  args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
+  id: 'trigger-unit-test-pipeline-execution'  
+  waitFor:
+  - RUN-QUERY_SCRIPT
+- name: python:3.7
+  entrypoint: python3
   id: RUN-UNIT-TESTS
   args:
   - '-m'
@@ -34,33 +55,4 @@ steps:
   - '-c'
   - 'functions/nose2.cfg'
   waitFor:
-  - INSTALL
-#- name: python:3.7
-#  entrypoint: python3
-#  id: RUN-COVERAGE-TESTS
-#  args:
-#  - '-c'
-#  - 'import sys; from pycobertura import Cobertura, TextReporter; cobertura = Cobertura("functions/coverage.xml"); tr = TextReporter(cobertura); coverage = tr.generate().split(" ")[-1].strip("%"); print("Coverage OK:",coverage + "% > 90%") if float(coverage) > 90 else sys.exit("Coverage is less than 90%")'
-#  waitFor:
-#  - RUN-UNIT-TESTS
-- name: python:3.7
-  entrypoint: python3
-  id: RUN-LINTER-CHECK
-  args:
-  - '-m'
-  - 'flake8'
-  - '--ignore=E501'
-  - 'functions/'
-  waitFor:
-  - RUN-UNIT-TESTS 
-- name: gcr.io/cloud-builders/gcloud
-  entrypoint: 'bash'
-  id: RUN-QUERY_SCRIPT
-  args: ['run_query.sh', 'my_query.sql']
-  waitFor:
-  - INSTALL
-- name: gcr.io/cloud-builders/gcloud
-  args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
-  id: 'trigger-unit-test-pipeline-execution'  
-  waitFor:
-  - INSTALL
+  - trigger-unit-test-pipeline-execution
