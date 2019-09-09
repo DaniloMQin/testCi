@@ -7,7 +7,7 @@ class Test11(unittest.TestCase):
     def test1(self):
         print("TEST1 starts")
         time.sleep(2)
-        print("TEST1 ends")
+        print("TEST1 ends rwertewrtertretreter")
     def test2(self):
         print("TEST2 starts")
         time.sleep(3)
