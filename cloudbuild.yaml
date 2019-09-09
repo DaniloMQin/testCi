@@ -21,7 +21,7 @@ steps:
   - 'install'
   - '-t'
   - '.'
-  - '-r'
+  - '-r' 
   - 'functions/requirements.txt'
 - name: python:3.7
   entrypoint: python3
