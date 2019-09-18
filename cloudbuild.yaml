@@ -23,27 +23,27 @@ steps:
   - '.'
   - '-r' 
   - 'functions/requirements.txt'
-- name: python:3.7
-  entrypoint: python3
-  id: RUN-LINTER-CHECK
-  args:
-  - '-m'
-  - 'flake8'
-  - '--ignore=E501'
-  - 'functions/'
-  waitFor:
-  - INSTALL
+#- name: python:3.7
+#  entrypoint: python3
+#  id: RUN-LINTER-CHECK
+#  args:
+#  - '-m'
+#  - 'flake8'
+#  - '--ignore=E501'
+#  - 'functions/'
+#  waitFor:
+#  - INSTALL
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
-  id: RUN-QUERY_SCRIPT
-  args: ['run_query.sh', 'my_query.sql']
+  id: RUN_QUERY_SCRIPT
+  args: ['run_query.sh', 'ETL_FCT_CUSTOMER_HISTORY.sql']
   waitFor:
-  - RUN-LINTER-CHECK
+  - INSTALL
 - name: gcr.io/cloud-builders/gcloud
   args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
   id: 'trigger-unit-test-pipeline-execution'  
   waitFor:
-  - RUN-QUERY_SCRIPT
+  - RUN_QUERY_SCRIPT
 - name: python:3.7
   entrypoint: python3
   id: RUN-UNIT-TESTS
