@@ -33,12 +33,12 @@ steps:
 #  - 'functions/'
 #  waitFor:
 #  - INSTALL
-- name: gcr.io/cloud-builders/gcloud
-  entrypoint: 'bash'
-  id: RUN_QUERY_SCRIPT
-  args: ['run_query.sh', 'ETL_FCT_CUSTOMER_HISTORY.sql']
-  waitFor:
-  - INSTALL
+#- name: gcr.io/cloud-builders/gcloud
+#  entrypoint: 'bash'
+#  id: RUN_QUERY_SCRIPT
+#  args: ['run_query.sh', 'ETL_FCT_CUSTOMER_HISTORY.sql']
+#  waitFor:
+#  - INSTALL
 #- name: gcr.io/cloud-builders/gcloud
 #  args: ['composer', 'environments', 'run', 'ls-dp-imp-v001', '--location', 'europe-west1', 'trigger_dag', '--', 'Trial_DAG']
 #  id: 'trigger-unit-test-pipeline-execution'  
@@ -46,7 +46,7 @@ steps:
 #  - RUN_QUERY_SCRIPT
 - name: python:3.7
   entrypoint: python3
-  id: RUN-UNIT-TESTS
+  id: INSTALL
   args:
   - '-m'
   - 'nose2'
