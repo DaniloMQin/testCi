@@ -305,7 +305,7 @@ def run(**argv):
                 r = row_transformer.parse(rowstr)
                 row_transformer.DPLF_run_row_conversion(r)
             count=count+1
-
+		print("Elaborato con successo ")
 #     # Stage of the pipeline that translates a delimited single row to a dictionary object consumable by BigQuery.
 #     dict_records = rows | "Convert to BigQuery row" >> beam.Map(
 #         lambda r: row_transformer.parse(r))
