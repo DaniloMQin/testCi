@@ -1,3 +1,4 @@
 nose2
 pycobertura
 flake8-requirements
+apache-beam
